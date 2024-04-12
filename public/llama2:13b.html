@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>River AI - Llama2:13b</title>
+    <meta name="description" content="Llama2:13b on River AI">
+    <meta property="og:title" content="River AI - Llama2:13b">
+    <meta property="og:description" content="Chat with Llama2:13b on River AI">
+    <meta property="og:image" content="https://media.xordas.me/movie-river/logo-round.png">
+    <meta property="og:url" content="https://ai.movie-river.xyz">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://media.xordas.me/movie-river/logo-round.png">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://www.google.com/recaptcha/api.js?render=6LehzKApAAAAAM0QtYqR_GwxitTwxd56iUTNv3U1"></script>
+
+    <!--GA-->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CT6FETELZ0"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-CT6FETELZ0');</script>
+
+    <!--Adsense-->
+    <meta name="google-adsense-account" content="ca-pub-4386319389803939"></meta>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4386319389803939" crossorigin="anonymous"></script>
+
+    
+    
+</head>
+<body class="bg-gray-900 min-h-screen font-sans text-white flex flex-col items-center justify-start pt-8 pb-8">
+    <div class="bg-gray-800 rounded-lg shadow p-6 w-full max-w-7xl m-1">
+        <div class="flex justify-between items-center mb-4">
+            <a href="/" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Back</a>
+            <h1 class="text-2xl text-blue-300">You are chatting with Llama2:13b</h1>
+            <div></div> <!-- This empty div is to add spacing DONT REMOVE IT -->
+        </div>
+        <div id="chatHistory" class="overflow-y-scroll border-b-2 border-gray-700 pb-4 mb-4" style="height: 75vh;"></div>
+        <div class="flex">
+            <input id="userInput" type="text" class="border-t border-b border-r rounded px-3 py-2 w-full text-black" placeholder="Type your message...">
+            <button onclick="sendMessage()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2">Send</button>
+            <button onclick="clearChatHistory()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2">Clear</button>
+        </div>
+    </div>
+
+    <style>
+        #loadingDots:after {
+            content: ' .';
+            animation: dots 1s steps(5, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60% { content: '...'; }
+            80%, 100% { content: ''; }
+        }
+
+        .message.typing {
+            background-color: #2d3748; 
+            border-radius: 5px; 
+        }
+
+        #chatHistory::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        #chatHistory::-webkit-scrollbar-track {
+            background: #2d3748; 
+            border-radius: 10px; 
+        }
+
+        #chatHistory::-webkit-scrollbar-thumb {
+            background: #4a5568; 
+            border-radius: 10px; 
+        }
+
+        #chatHistory::-webkit-scrollbar-thumb:hover {
+            background: #1a202c; 
+        }
+
+        .message {
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #2d3748; 
+            border-radius: 5px; 
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/marked@3.0.8/lib/marked.js"></script>
+    <script>
+        const chatHistoryDiv = document.getElementById('chatHistory');
+        const userInput = document.getElementById('userInput');
+
+        let chatHistory = localStorage.getItem('chatHistory') || '';
+        chatHistoryDiv.innerHTML = chatHistory;
+
+        async function sendMessage() {
+            const message = userInput.value;
+            userInput.value = '';
+
+            // Get the reCAPTCHA token
+            const recaptchaToken = await grecaptcha.execute('6LehzKApAAAAAM0QtYqR_GwxitTwxd56iUTNv3U1', {action: 'submit'});
+
+            chatHistory += `<div class="message">You: ${message}</div>`;
+            localStorage.setItem('chatHistory', chatHistory);
+            chatHistoryDiv.innerHTML = chatHistory;
+
+            const typingMessage = document.createElement('div');
+            typingMessage.className = 'message typing';
+            typingMessage.id = 'typingMessage';
+            typingMessage.innerHTML = `AI: Loading response<span id="loadingDots"></span>`;
+            chatHistoryDiv.appendChild(typingMessage);
+
+            console.log('trying to fetch response from llama2:13b');
+
+            const response = await fetch(`/api/llama2:13b?userInput=${encodeURIComponent(message)}&recaptchaToken=${encodeURIComponent(recaptchaToken)}&chatHistory=${encodeURIComponent(chatHistory)}`);
+
+            const aiResponse = await response.text();
+
+            typingMessage.remove();
+
+            const aiResponseDiv = document.createElement('div');
+            aiResponseDiv.className = 'message';
+
+            let i = 0;
+            const typingInterval = setInterval(() => {
+                if (i < aiResponse.length) {
+                    aiResponseDiv.innerHTML += aiResponse[i];
+                    i++;
+                } else {
+                    clearInterval(typingInterval);
+                    chatHistory += `<div class="message">${aiResponse}</div>`;
+                    localStorage.setItem('chatHistory', chatHistory);
+                    chatHistoryDiv.scrollTop = chatHistoryDiv.scrollHeight;
+                }
+            }, 7 + Math.random() * 8); 
+
+            chatHistoryDiv.appendChild(aiResponseDiv);
+        }
+
+        function clearChatHistory() {
+            chatHistory = '';
+            localStorage.setItem('chatHistory', chatHistory);
+            chatHistoryDiv.innerHTML = chatHistory;
+        }
+    </script>
+</body>
+</html>

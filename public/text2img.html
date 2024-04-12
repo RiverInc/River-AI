@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>River AI - Text to image</title>
+    <meta name="description" content="Text to image on River AI">
+    <meta property="og:title" content="River AI - Text to image">
+    <meta property="og:description" content="Turn your text based prompts into beautiful images on River AI">
+    <meta property="og:image" content="https://media.xordas.me/movie-river/logo-round.png">
+    <meta property="og:url" content="https://ai.movie-river.xyz">
+    <link rel="icon" href="https://media.xordas.me/movie-river/logo-round.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://www.google.com/recaptcha/api.js?render=6LehzKApAAAAAM0QtYqR_GwxitTwxd56iUTNv3U1"></script>
+
+    <!--GA-->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CT6FETELZ0"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-CT6FETELZ0');</script>
+    
+    <!--Adsense-->
+    <meta name="google-adsense-account" content="ca-pub-4386319389803939"></meta>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4386319389803939" crossorigin="anonymous"></script>
+
+</head>
+<body class="bg-gray-900 min-h-screen font-sans text-white flex flex-col items-center justify-start pt-8 pb-8">
+    <div class="bg-gray-800 rounded-lg shadow p-6 w-2/4 max-w-7xl m-1 mx-auto">
+        <h1 class="text-2xl text-blue-300 mb-4">Text to Image Generator</h1>
+        <div class="flex">
+            <input id="userInput" type="text" class="border-t border-b border-r rounded px-3 py-2 w-full text-black" placeholder="Type your text...">
+            <button onclick="generateImage()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2">Generate</button>
+        </div>
+        <div id="imageBox" class="border-2 border-gray-700 mt-4 p-4 flex items-center justify-center" style="height: 75vh;">
+            <div id="spinner" class="loader" style="display: none;"></div>
+        </div>
+        <button onclick="window.history.back()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2">Back</button>
+        <a id="downloadLink" download="image.png" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2 ml-2">Download</a>
+    </div>
+
+    <style>
+        .loader {
+            display: block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+        .loader:after {
+            content: " ";
+            display: block;
+            border-radius: 50%;
+            width: 0;
+            height: 0;
+            margin: 8px;
+            box-sizing: border-box;
+            border: 32px solid #000;
+            border-color: #000 transparent #000 transparent;
+            animation: loader 1.2s infinite;
+        }
+        @keyframes loader {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
+    <script>
+        const userInput = document.getElementById('userInput');
+        const imageBox = document.getElementById('imageBox');
+        const downloadLink = document.getElementById('downloadLink');
+        const spinner = document.getElementById('spinner');
+
+        async function generateImage() {
+            const text = userInput.value;
+            userInput.value = '';
+
+            const recaptchaToken = await grecaptcha.execute('6LehzKApAAAAAM0QtYqR_GwxitTwxd56iUTNv3U1', {action: 'submit'});
+
+            spinner.style.display = 'block';
+
+            const response = await fetch(`/api/text2img?userInput=${encodeURIComponent(text)}&recaptchaToken=${encodeURIComponent(recaptchaToken)}`);
+
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+
+            const img = document.createElement('img');
+            img.src = url;
+            img.alt = text;
+            img.style.maxWidth = '100%';
+            img.style.maxHeight = '100%';
+
+            imageBox.innerHTML = '';
+            imageBox.appendChild(img);
+
+            downloadLink.href = url;
+
+            spinner.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
