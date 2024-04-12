@@ -65,12 +65,9 @@
     </style>
 
     <script>
-        const userInput = document.getElementById('userInput');
-        const imageBox = document.getElementById('imageBox');
-        const downloadLink = document.getElementById('downloadLink');
-        const spinner = document.getElementById('spinner');
-
         async function generateImage() {
+            imageBox.innerHTML = '';
+
             const text = userInput.value;
             userInput.value = '';
 
@@ -89,7 +86,6 @@
             img.style.maxWidth = '100%';
             img.style.maxHeight = '100%';
 
-            imageBox.innerHTML = '';
             imageBox.appendChild(img);
 
             downloadLink.href = url;
