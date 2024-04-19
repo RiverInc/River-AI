@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>River AI - Unleash the Power of AI</title>
-    <meta name="description" content="Explore our advanced AI models including Text to Image, GPT 3.5, Mixtral 8x, and the Llama2 series.">
+    <meta name="description" content="Explore our advanced AI models including Text to Image, GPT 3.5, Mixtral 8x, and the Llama 3 series.">
     <meta property="og:title" content="River AI - Unleash the Power of AI">
-    <meta property="og:description" content="Explore our advanced AI models including Text to Image, GPT 3.5, Mixtral 8x, and the Llama2 series.">
+    <meta property="og:description" content="Explore our advanced AI models including Text to Image, GPT 3.5, Mixtral 8x, and the Llama 3 series.">
     <meta property="og:image" content="https://media.xordas.me/movie-river/logo-round.png">
     <meta property="og:url" content="https://ai.movie-river.xyz">
     <link rel="icon" href="https://media.xordas.me/movie-river/logo-round.png">
@@ -37,20 +37,34 @@
                     <h3 class="text-2xl mb-2 text-blue-300">GPT 3.5</h3>
                     <p class="text-gray-300">The second most advanced model in the GPT series, offering comprehensive capabilities with fast response times.</p>
                 </a>
+                <a href="/gemini" class="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition-colors duration-200">
+                    <h3 class="text-2xl mb-2 text-blue-300">Google Gemini advanced</h3>
+                    <p class="text-gray-300">The most advanced model that Google offers, offering comprehensive capabilities with fast response times.</p>
+                </a>
+                <a href="/llama3-70b" class="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition-colors duration-200 relative">
+                    <div class="absolute top-5 right-5 bg-blue-500 text-white text-xs px-2 py-1 rounded-full">⭐ New</div>
+                    <h3 class="text-2xl mb-2 text-blue-300">Llama 3 70b</h3>
+                    <p class="text-gray-300">One the most advanced AI models on this website, offering comprehensive capabilities. Currently this is the most advanced model in the Llama3 family.</p>
+                </a>
+                <a href="/llama3-8b" class="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition-colors duration-200 relative">
+                    <div class="absolute top-5 right-5 bg-blue-500 text-white text-xs px-2 py-1 rounded-full">⭐ New</div>
+                    <h3 class="text-2xl mb-2 text-blue-300">Llama 3 8b</h3>
+                    <p class="text-gray-300">The second most advanced AI models on this website, offering comprehensive capabilities. This is a smaller model with faster response times.</p>
+                </a>
                 <a href="/mixtral" class="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition-colors duration-200">
                     <h3 class="text-2xl mb-2 text-blue-300">Mixtral 8x</h3>
                     <p class="text-gray-300">One of the most advanced AI models on this website, offering comprehensive capabilities, outperforming Llama2:70b by about 6 times.</p>
                 </a>
                 <a href="/llama2-70b" class="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition-colors duration-200">
-                        <h3 class="text-2xl mb-2 text-blue-300">Llama2:70b</h3>
+                        <h3 class="text-2xl mb-2 text-blue-300">Llama 2 70b</h3>
                         <p class="text-gray-300">The most advanced model in the Llama2 series, offering comprehensive capabilities, but with slower response times.</p>
                 </a>
                 <a href="/llama2-13b" class="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition-colors duration-200">
-                        <h3 class="text-2xl mb-2 text-blue-300">Llama2:13b</h3>
+                        <h3 class="text-2xl mb-2 text-blue-300">Llama 2 13b</h3>
                         <p class="text-gray-300">The second most advanced model in the Llama2 series, balancing advanced features with moderate response times.</p>
                 </a>
                 <a href="/llama2-7b" class="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition-colors duration-200">
-                        <h3 class="text-2xl mb-2 text-blue-300">Llama2:7b</h3>
+                        <h3 class="text-2xl mb-2 text-blue-300">Llama 2 7b</h3>
                         <p class="text-gray-300">The most basic model in the Llama2 series, offering the fastest response times.</p>
                 </a>
             </div>
@@ -78,7 +92,15 @@
 <br>
         <footer class="w-full text-center bg-gray-800 text-white py-4">
             <p>© 2024 River AI. All rights reserved.</p>
-            <p>Version 2.11</p>
+            <p>Version 2.2</p>
+            <button id="clearLocalStorage" style="bottom: 3px; right: 3px; z-index: 100; padding: 1px 3px; font-size: 8px;">Clear local storage</button>
         </footer>
+
+        <Script>
+        document.getElementById('clearLocalStorage').addEventListener('click', function() {
+            localStorage.clear();
+            alert('Local storage cleared!');
+        });
+        </script>
 </body>
 </html>

@@ -97,7 +97,6 @@
             const message = userInput.value;
             userInput.value = '';
 
-            // Get the reCAPTCHA token
             const recaptchaToken = await grecaptcha.execute('6LehzKApAAAAAM0QtYqR_GwxitTwxd56iUTNv3U1', {action: 'submit'});
 
             chatHistory += `<div class="message">You: ${message}</div>`;

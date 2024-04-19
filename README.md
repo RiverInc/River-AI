@@ -1,1 +1,1 @@
-# Welcome to River AI
+# river-ai-beta
