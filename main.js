@@ -21,6 +21,13 @@ process.on('unhandledRejection', (reason, p) => {
   process.exit(1);
 });
 
+function errorHandler(err, req, res, next) {
+  console.error(err.stack); 
+  res.status(500).json({ message: "An error occurred, try again later." });
+  next(); 
+}
+app.use(errorHandler);
+
 const limiterPerSecond = rateLimit({
     windowMs: 1000, 
     max: 1 
